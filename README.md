@@ -2,7 +2,7 @@
 ioBroker RPI-Monitor Adapter
 ==============
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.rpi2.svg)](https://www.npmjs.com/package/iobroker.rpi2)
+![Number of Installations](http://iobroker.live/badges/rpi2-installed.svg) ![Number of Installations](http://iobroker.live/badges/rpi2-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.rpi2.svg)](https://www.npmjs.com/package/iobroker.rpi2)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.rpi2.svg)](https://www.npmjs.com/package/iobroker.rpi2)
 
 [![NPM](https://nodei.co/npm/iobroker.rpi2.png?downloads=true)](https://nodei.co/npm/iobroker.rpi2/)
