@@ -14,8 +14,20 @@
             "pl": "Monitor RPI",
             "zh-cn": "RPI-监视器"
         },
-        "version": "1.0.0",
+        "version": "1.1.0",
         "news": {
+            "1.1.0": {
+                "en": "Support for Nodejs 10",
+                "de": "Unterstützung für Nodejs 10",
+                "ru": "Поддержка Nodejs 10",
+                "pt": "Suporte para Nodejs 10",
+                "nl": "Ondersteuning voor Nodejs 10",
+                "fr": "Prise en charge de Nodejs 10",
+                "it": "Supporto per Nodejs 10",
+                "es": "Soporte para Nodejs 10",
+                "pl": "Wsparcie dla Nodejs 10",
+                "zh-cn": "支持Nodejs 10"
+            },
             "1.0.0": {
                 "en": "Admin3 support",
                 "de": "Admin3-Unterstützung",
