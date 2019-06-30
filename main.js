@@ -7,6 +7,7 @@
 
 const utils = require('@iobroker/adapter-core'); // Get common adapter utils
 let gpio;
+let errorsLogged = {};
 
 const adapter = new utils.Adapter({
     name: 'rpi2',
@@ -319,8 +320,9 @@ function parser() {
                     } else {
                         if (i === 'wifi_send' || i === 'wifi_received') {
                             adapter.log.debug('No Value found for ' + i);
-                        } else {
+                        } else if (! errorsLogged[i]) {
                             adapter.log.error('No Value found for ' + i);
+                            errorsLogged[i] = true;
                         }
                     }
                 }
