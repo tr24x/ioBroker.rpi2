@@ -405,7 +405,7 @@ function syncPortDirection(port, data, callback) {
                     type: 'state'
                 };
                 adapter.setObject('gpio.' + port + '.isInput', obj, () =>
-                    adapter.setState('gpio.' + port + '.isInput', !data.input, true, callback));
+                    adapter.setState('gpio.' + port + '.isInput', isInput, true, callback));
             } else {
                 adapter.setState('gpio.' + port + '.isInput', isInput, true, callback);
             }
