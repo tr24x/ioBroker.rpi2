@@ -39,8 +39,10 @@
             text += '<td style="text-align: center">' + allowedGPIOs[p] + '</td>';
             text += '<td style="text-align: center"><input class="gpio-value" type="checkbox" data-index="' + allowedGPIOs[p] + '" data-option="enabled"/><span></span></td>';
             text += '<td style="text-align: center"><select class="gpio-value" data-index="' + allowedGPIOs[p] + '" data-option="input">' +
-                            '<option value="false">' + _('out') + '</option>' +
-                            '<option value="true">'  + _('in') + '</option>' +
+                            '<option value="in">'  + _('in') + '</option>' +
+                            '<option value="out">' + _('out') + '</option>' +
+                            '<option value="outlow">' + _('outlow') + '</option>' +
+                            '<option value="outhigh">' + _('outhigh') + '</option>' +
                     '</select><label></label></td>';
             text += '</tr>';
             if (p === Math.round(allowedGPIOs.length / 2) - 1) {
@@ -55,7 +57,12 @@
             if ($(this).attr('type') === 'checkbox') {
                 $(this).prop('checked', data[index][attr] === 'true' || data[index][attr] === true);
             } else {
-                $(this).val(data[index][attr] === 'true' || data[index][attr] === true ? 'true' : 'false');
+                //ensure backwards compatibility: was true for "in" and false for "out" in older versions,
+                // now it is "in", "out", "outlow" or "outhigh"
+                var convertedvalue = data[index][attr];
+                if (data[index][attr] === 'true' || data[index][attr] === true) { convertedvalue = 'in'; }
+                else if (data[index][attr] === 'false' || data[index][attr] === false) { convertedvalue = 'out'; }
+                $(this).val(convertedvalue);
             }
 
             if (attr === 'enabled') {
