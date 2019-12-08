@@ -14,8 +14,20 @@
             "pl": "Monitor RPI",
             "zh-cn": "RPI-监视器"
         },
-        "version": "1.1.1",
+        "version": "1.2.0",
         "news": {
+            "1.2.0": {
+                "en": "GPIO configuration as output with defined initial value",
+                "de": "GPIO Konfiguration als Ausgang mit definiertem Startwert",
+                "ru": "Конфигурация GPIO как выход с заданным начальным значением",
+                "pt": "Configuração GPIO como saída com valor inicial definido",
+                "nl": "GPIO-configuratie als uitgang met gedefinieerde beginwaarde",
+                "fr": "Configuration GPIO en sortie avec valeur initiale définie",
+                "it": "Configurazione GPIO come output con valore iniziale definito",
+                "es": "Configuración GPIO como salida con valor inicial definido",
+                "pl": "Konfiguracja GPIO jako wyjście ze zdefiniowaną wartością początkową",
+                "zh-cn": "GPIO配置为具有定义的初始值的输出"
+            },
             "1.1.1": {
                 "en": "Error messages for not existing values are logged only once",
                 "de": "Fehlermeldungen für nicht vorhandene Werte werden nur einmal protokolliert",

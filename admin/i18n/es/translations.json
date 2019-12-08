@@ -14,6 +14,8 @@
     "Type": "Tipo",
     "Uptime:": "Tiempo de actividad",
     "WLAN:": "WLAN",
-    "in": "en",
-    "out": "fuera"
+    "in": "Entrada",
+    "out": "Salida",
+    "outhigh": "Salida, valor inicial 1",
+    "outlow": "Salida, valor inicial 0"
 }

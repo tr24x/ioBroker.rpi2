@@ -139,6 +139,9 @@ For instance PI2:
 
 ## Changelog
 
+### 1.2.0
+ - (janfromberlin) GPIO configuration as output with defined initial value
+
 ### 1.1.1
  - (Apollon77) Error messages for not existing values are logged only once
 
