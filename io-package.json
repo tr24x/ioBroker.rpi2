@@ -14,8 +14,20 @@
             "pl": "Monitor RPI",
             "zh-cn": "RPI-监视器"
         },
-        "version": "1.1.1",
+        "version": "1.2.0",
         "news": {
+            "1.2.0": {
+                "en": "removed usage of adapter.objects",
+                "de": "Verwendung von adapter.objects entfernt",
+                "ru": "удалено использование файла adapter.objects",
+                "pt": "removido o uso de adapter.objects",
+                "nl": "gebruik van adapter.objects verwijderd",
+                "fr": "utilisation supprimée de adapter.objects",
+                "it": "rimosso l'utilizzo di adapter.objects",
+                "es": "uso eliminado de adaptador.objetos",
+                "pl": "usunięto użycie adapter.objects",
+                "zh-cn": "删除了adapter.objects的用法"
+            },
             "1.1.1": {
                 "en": "Error messages for not existing values are logged only once",
                 "de": "Fehlermeldungen für nicht vorhandene Werte werden nur einmal protokolliert",
@@ -111,18 +123,6 @@
                 "es": "revisión inicio de adaptador",
                 "pl": "naprawiono zasilacza",
                 "zh-cn": "修复启动的适配器"
-            },
-            "0.2.0": {
-                "en": "implement GPIOs control",
-                "de": "Implementiert die Steuerung von GPIOs",
-                "ru": "Добавлено управление GPIOs",
-                "pt": "implementar GPIOs de controle",
-                "nl": "implementeren GPIOs controle",
-                "fr": "mettre en œuvre des GPIOs de contrôle",
-                "it": "implementare GPIOs di controllo",
-                "es": "implementar GPIOs de control",
-                "pl": "realizacja kontroli GPIO ",
-                "zh-cn": "实现Gpio控制"
             }
         },
         "mode": "daemon",
@@ -148,6 +148,9 @@
         "osDependencies": {
             "linux": ["build-essential", "python"]
         },
+        "dependencies": [
+            {"js-controller":  ">=2.0.0"}
+        ],
         "license": "MIT",
         "singletonHost": true,
         "readme": "https://github.com/iobroker-community-adapters/ioBroker.rpi2/blob/master/README.md",

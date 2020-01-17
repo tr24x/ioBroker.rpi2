@@ -16,7 +16,7 @@ const adapter = new utils.Adapter({
         config = adapter.config;
 
         if (adapter.config.forceinit) {
-            adapter.objects.getObjectList({startkey: adapter.name + '.' + adapter.instance, endkey: adapter.name + '.' + adapter.instance + '\u9999'}, function (err, res) {
+            adapter.getObjectList({startkey: adapter.name + '.' + adapter.instance, endkey: adapter.name + '.' + adapter.instance + '\u9999'}, function (err, res) {
                 res = res.rows;
                 for (let i = 0; i < res.length; i++) {
                     const id = res[i].doc.common.name;
@@ -36,7 +36,7 @@ const adapter = new utils.Adapter({
         }
         adapter.subscribeStates('*');
 
-        adapter.objects.getObjectList({include_docs: true}, (err, res) => {
+        adapter.getObjectList({include_docs: true}, (err, res) => {
             res = res.rows;
             objects = {};
             for (let i = 0; i < res.length; i++) {
