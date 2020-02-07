@@ -17,15 +17,15 @@ const adapter = new utils.Adapter({
 
         if (adapter.config.forceinit) {
             adapter.getAdapterObjects((res) => {
-                for (const id of Objects.keys(res)) {
+                for (const id of Object.keys(res)) {
                     adapter.log.debug('Remove ' + id + ': ' + id);
 
                     adapter.delObject(id, (res, err) => {
-                        if (res !== undefined && res !== 'Not exists') adapter.log.error('res from delObject: ' + res);
+                        if (res !== undefined && res !== null && res !== 'Not exists') adapter.log.error('res from delObject: ' + res);
                         if (err !== undefined) adapter.log.error('err from delObject: ' + err);
                     });
                     adapter.deleteState(id, (res, err) => {
-                        if (res !== undefined && res !== 'Not exists') adapter.log.error('res from deleteState: ' + res);
+                        if (res !== undefined && res !== null && res !== 'Not exists') adapter.log.error('res from deleteState: ' + res);
                         if (err !== undefined) adapter.log.error('err from deleteState: ' + err);
                     });
                 }
