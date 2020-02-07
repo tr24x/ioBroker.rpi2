@@ -16,11 +16,8 @@ const adapter = new utils.Adapter({
         config = adapter.config;
 
         if (adapter.config.forceinit) {
-            adapter.objects.getObjectList({startkey: adapter.name + '.' + adapter.instance, endkey: adapter.name + '.' + adapter.instance + '\u9999'}, function (err, res) {
-                res = res.rows;
-                for (let i = 0; i < res.length; i++) {
-                    const id = res[i].doc.common.name;
-
+            adapter.getAdapterObjects((res) => {
+                for (const id of Objects.keys(res)) {
                     adapter.log.debug('Remove ' + id + ': ' + id);
 
                     adapter.delObject(id, (res, err) => {
@@ -33,18 +30,19 @@ const adapter = new utils.Adapter({
                     });
                 }
             });
+            objects = {}; //all objects are deleted.
+        } else {
+             adapter.getAdapterObjects((res) => {
+                objects = {};
+                for (const id of Object.keys(res)) {
+                    objects[id] = true; //object already exists.
+                }
+
+                adapter.log.debug('received all objects');
+                main();
+             });
         }
         adapter.subscribeStates('*');
-
-        adapter.getAdapterObjects((res) => {
-            objects = {};
-            for (const id of Object.keys(res)) {
-                objects[id] = true; //object already exists.
-            }
-
-            adapter.log.debug('received all objects');
-            main();
-        });
     },
     stateChange: function (id, state) {
         adapter.log.debug('stateChange for ' + id + ' found state = ' + JSON.stringify(state));
