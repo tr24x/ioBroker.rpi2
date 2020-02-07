@@ -18,6 +18,10 @@ const adapter = new utils.Adapter({
         if (adapter.config.forceinit) {
             adapter.getAdapterObjects((res) => {
                 for (const id of Object.keys(res)) {
+                    if (/^rpi2\.\d+$/.test(id)) {
+                        adapter.log.debug('Skip root object ' + id);
+                        continue;
+                    }
                     adapter.log.debug('Remove ' + id + ': ' + id);
 
                     adapter.delObject(id, (res, err) => {
