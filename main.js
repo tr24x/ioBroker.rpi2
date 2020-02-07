@@ -14,6 +14,7 @@ const adapter = new utils.Adapter({
 
     ready: function () {
         config = adapter.config;
+        objects = {};
 
         if (adapter.config.forceinit) {
             adapter.getAdapterObjects((res) => {
@@ -34,10 +35,8 @@ const adapter = new utils.Adapter({
                     });
                 }
             });
-            objects = {}; //all objects are deleted.
         } else {
              adapter.getAdapterObjects((res) => {
-                objects = {};
                 for (const id of Object.keys(res)) {
                     objects[id] = true; //object already exists.
                 }
