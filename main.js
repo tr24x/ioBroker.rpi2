@@ -36,11 +36,10 @@ const adapter = new utils.Adapter({
         }
         adapter.subscribeStates('*');
 
-        adapter.objects.getObjectList({include_docs: true}, (err, res) => {
-            res = res.rows;
+        adapter.getAdapterObjects((res) => {
             objects = {};
-            for (let i = 0; i < res.length; i++) {
-                objects[res[i].doc._id] = res[i].doc;
+            for (const id of Object.keys(res)) {
+                objects[id] = true; //object already exists.
             }
 
             adapter.log.debug('received all objects');
@@ -220,6 +219,7 @@ function parser() {
                 };
 
                 adapter.extendObject(c, stateObj);
+                objects[c] = true; //remember that we created the object.
             }
             const o = config[c];
             for (const i in o) {
@@ -268,6 +268,7 @@ function parser() {
                                 _id: objectName
                             };
                             adapter.extendObject(objectName, stateObj);
+                            objects[objectName] = true; //remember that we created the object.
                         }
                         adapter.setState(objectName, {
                             val: value,
@@ -312,6 +313,7 @@ function parser() {
                                 _id: objectName
                             };
                             adapter.extendObject(objectName, stateObj);
+                            objects[objectName] = true; //remember that we created the object.
                         }
                         adapter.setState(objectName, {
                             val: value,
