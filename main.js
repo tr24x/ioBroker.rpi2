@@ -39,10 +39,11 @@ const adapter = new utils.Adapter({
                 }
 
                 adapter.log.debug('received all objects');
-                main();
              });
         }
         adapter.subscribeStates('*');
+        
+        main();
     },
     stateChange: function (id, state) {
         adapter.log.debug('stateChange for ' + id + ' found state = ' + JSON.stringify(state));
