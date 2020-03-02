@@ -64,7 +64,7 @@ const adapter = new utils.Adapter({
         if (gpio) {
             gpio.destroy(() => callback && callback());
         } else {
-            callback && callback()
+            callback && callback();
         }
     }
 });
@@ -74,7 +74,7 @@ function writeGpio(port, value) {
     if (!adapter.config.gpios[port] || !adapter.config.gpios[port].enabled) {
         adapter.log.warn('Port ' + port + ' is not writable, because disabled.');
         return;
-    } else if (adapter.config.gpios[port].input === 'true' || adapter.config.gpios[port].input === true) {
+    } else if (adapter.config.gpios[port].input === 'in' || adapter.config.gpios[port].input === 'true' || adapter.config.gpios[port].input === true) {
         return adapter.log.warn('Port ' + port + ' is configured as input and not writable');
     }
 
@@ -178,8 +178,8 @@ function parser() {
                 if (match !== undefined && match !== null && match.length !== undefined) {
                     adapter.log.debug('GROUPS: ' + match.length);
                 }
-                // TODO: if Group Match is bigger then 2
-                // split groups and header into seperate objects
+                // TODO: if Group Match is bigger than 2
+                // split groups and header into separate objects
                 if (match !== undefined && match !== null && match.length > 2) {
                     const lname = i.split(',');
                     for (let m = 1; m < match.length; m++) {
@@ -253,7 +253,7 @@ function parser() {
                         }
 
                         adapter.log.debug('MATCHING: ' + value);
-                        adapter.log.debug('NAME: ' + name + ' VALULE: ' + value);
+                        adapter.log.debug('NAME: ' + name + ' VALUE: ' + value);
 
                         const objectName = adapter.name + '.' + adapter.instance + '.' + c + '.' + name;
                         adapter.log.debug('SETSTATE FOR ' + objectName + ' VALUE = ' + value);
@@ -354,29 +354,27 @@ function readValue(port) {
 function syncPort(port, data, callback) {
     adapter.getObject('gpio.' + port + '.state', (err, obj) => {
         if (data.enabled) {
-            if (data.input === 'true')  data.input = true;
-            if (data.input === 'false') data.input = false;
+            let isInput = (data.input === 'in' || data.input === 'true' || data.input === true);
 
             if (err || !obj || !obj.common) {
                 obj = {
                     common: {
                         name:  'GPIO ' + port,
                         type:  'boolean',
-                        role:  data.input ? 'indicator' : 'switch',
-                        read:  data.input,
-                        write: !data.input
+                        role:  isInput ? 'indicator' : 'switch',
+                        read:  isInput,
+                        write: !isInput
                     },
                     native: {
-
                     },
                     type: 'state'
                 };
                 adapter.setObject('gpio.' + port + '.state', obj, () =>
                     syncPortDirection(port, data, callback));
             } else {
-                if (obj.common.read !== data.input) {
-                    obj.common.read  = data.input;
-                    obj.common.write = !data.input;
+                if (obj.common.read !== isInput) {
+                    obj.common.read  = isInput;
+                    obj.common.write = !isInput;
                     adapter.setObject('gpio.' + port + '.state', obj, () =>
                         syncPortDirection(port, data, callback));
                 } else {
@@ -398,6 +396,7 @@ function syncPort(port, data, callback) {
 function syncPortDirection(port, data, callback) {
     adapter.getObject('gpio.' + port + '.isInput', (err, obj) => {
         if (data.enabled) {
+            let isInput = (data.input === 'in' || data.input === 'true' || data.input === true);
             if (err || !obj || !obj.common) {
                 obj = {
                     common: {
@@ -408,14 +407,13 @@ function syncPortDirection(port, data, callback) {
                         write: false
                     },
                     native: {
-
                     },
                     type: 'state'
                 };
                 adapter.setObject('gpio.' + port + '.isInput', obj, () =>
-                    adapter.setState('gpio.' + port + '.isInput', !data.input, true, callback));
+                    adapter.setState('gpio.' + port + '.isInput', isInput, true, callback));
             } else {
-                adapter.setState('gpio.' + port + '.isInput', data.input, true, callback);
+                adapter.setState('gpio.' + port + '.isInput', isInput, true, callback);
             }
         } else {
             if (obj && obj.common) {
@@ -436,10 +434,7 @@ function initPorts() {
         for (let pp = 0; pp < adapter.config.gpios.length; pp++) {
             if (!adapter.config.gpios[pp] || !adapter.config.gpios[pp].enabled) continue;
             anyEnabled = true;
-
-            if (adapter.config.gpios[pp].input === 'true' || adapter.config.gpios[pp].input === true) {
-                anyInputs = true;
-            }
+            anyInputs = anyInputs || (adapter.config.gpios[pp].input === 'in' || adapter.config.gpios[pp].input === 'true' || adapter.config.gpios[pp].input === true);
         }
     }
 
@@ -462,33 +457,58 @@ function initPorts() {
             syncPort(p, adapter.config.gpios[p] || {});
 
             if (gpio && adapter.config.gpios[p].enabled) {
-                if (adapter.config.gpios[p].input === 'true')  adapter.config.gpios[p].input = true;
-                if (adapter.config.gpios[p].input === 'false') adapter.config.gpios[p].input = false;
+                /* Ensure backwards compatibility of property .input
+                 * in older versions, it was true for "in" and false for "out" 
+                 * in newer versions, it is "in", "out", "outlow" or "outhigh"
+                 */
+                if (adapter.config.gpios[p].input === 'true' || adapter.config.gpios[p].input === true) {
+                    adapter.config.gpios[p].input = 'in';
+                }
+                else if (adapter.config.gpios[p].input === 'false' || adapter.config.gpios[p].input === false) {
+                    adapter.config.gpios[p].input = 'out';
+                }
 
-                if (adapter.config.gpios[p].input) {
-                    count++;
-                    (function (port){
-                        gpio.setup(port, gpio.DIR_IN, gpio.EDGE_BOTH, err => {
-                            if (!err) {
-                                readValue(port);
-                            } else {
-                                adapter.log.error('Cannot setup port ' + port + ' as input: ' + err);
-                            }
-                            if (!--count) {
-                                adapter.log.debug('Register onchange handler');
-                                // register on change handler
-                                gpio.on('change', (port, value) => {
-                                    adapter.log.debug('GPIO change on port ' + port + ': ' + value);
-                                    adapter.setState('gpio.' + port + '.state', !!value, true);
-                                });
-                            }
-                        });
-                    })(p);
-                } else {
-                    (function (port){
-                        gpio.setup(port, gpio.DIR_OUT, err =>
-                            err && adapter.log.error('Cannot setup port ' + port + ' as output: ' + err));
-                    })(p);
+                switch(adapter.config.gpios[p].input) {
+                    case 'in':
+                        count++;
+                        (function (port){
+                            gpio.setup(port, gpio.DIR_IN, gpio.EDGE_BOTH, err => {
+                                if (!err) {
+                                    readValue(port);
+                                } else {
+                                    adapter.log.error('Cannot setup port ' + port + ' as input: ' + err);
+                                }
+                                if (!--count) {
+                                    adapter.log.debug('Register onchange handler');
+                                    // register on change handler
+                                    gpio.on('change', (port, value) => {
+                                        adapter.log.debug('GPIO change on port ' + port + ': ' + value);
+                                        adapter.setState('gpio.' + port + '.state', !!value, true);
+                                    });
+                                }
+                            });
+                        })(p);
+                        break;
+                    case 'out':
+                        (function (port){
+                            gpio.setup(port, gpio.DIR_OUT, err =>
+                                err && adapter.log.error('Cannot setup port ' + port + ' as output: ' + err));
+                        })(p);
+                        break;
+                    case 'outlow':
+                        (function (port){
+                            gpio.setup(port, gpio.DIR_LOW, err =>
+                                err && adapter.log.error('Cannot setup port ' + port + ' as output with initial value "0": ' + err));
+                        })(p);
+                        break;
+                    case 'outhigh':
+                        (function (port){
+                            gpio.setup(port, gpio.DIR_HIGH, err =>
+                                err && adapter.log.error('Cannot setup port ' + port + ' as output with initial value "1": ' + err));
+                        })(p);
+                        break;
+                    default:
+                        adapter.log.error('Cannot setup port ' + port + ': invalid direction type.');
                 }
             }
         }

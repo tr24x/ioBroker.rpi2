@@ -140,7 +140,8 @@ For instance PI2:
 ## Changelog
 
 ### 1.2.0 (2020-01-17)
-* (foxriver76) No longer use adapter.objects
+- (janfromberlin) GPIO configuration as output with defined initial value
+- (foxriver76) No longer use adapter.objects
 
 ### 1.1.1
  - (Apollon77) Error messages for not existing values are logged only once
@@ -189,6 +190,6 @@ For instance PI2:
 
 ## License
 
-Copyright (c) 2015-2018 husky-koglhof <husky.koglhof@icloud.com>
+Copyright (c) 2015-2020 husky-koglhof <husky.koglhof@icloud.com>
 
 MIT License
