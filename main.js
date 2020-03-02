@@ -23,6 +23,7 @@ const adapter = new utils.Adapter({
                         adapter.log.debug('Skip root object ' + id);
                         continue;
                     }
+                  
                     adapter.log.debug('Remove ' + id + ': ' + id);
 
                     adapter.delObject(id, (res, err) => {
@@ -34,6 +35,8 @@ const adapter = new utils.Adapter({
                         if (err !== undefined) adapter.log.error('err from deleteState: ' + err);
                     });
                 }
+                adapter.subscribeStates('*');
+                main();
             });
         } else {
              adapter.getAdapterObjects((res) => {
@@ -42,11 +45,10 @@ const adapter = new utils.Adapter({
                 }
 
                 adapter.log.debug('received all objects');
+                adapter.subscribeStates('*');
+                main();
              });
-        }
-        adapter.subscribeStates('*');
-        
-        main();
+        }        
     },
     stateChange: function (id, state) {
         adapter.log.debug('stateChange for ' + id + ' found state = ' + JSON.stringify(state));
