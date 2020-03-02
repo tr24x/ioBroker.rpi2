@@ -14,38 +14,41 @@ const adapter = new utils.Adapter({
 
     ready: function () {
         config = adapter.config;
+        objects = {};
 
         if (adapter.config.forceinit) {
-            adapter.objects.getObjectList({startkey: adapter.name + '.' + adapter.instance, endkey: adapter.name + '.' + adapter.instance + '\u9999'}, function (err, res) {
-                res = res.rows;
-                for (let i = 0; i < res.length; i++) {
-                    const id = res[i].doc.common.name;
-
+            adapter.getAdapterObjects((res) => {
+                for (const id of Object.keys(res)) {
+                    if (/^rpi2\.\d+$/.test(id)) {
+                        adapter.log.debug('Skip root object ' + id);
+                        continue;
+                    }
+                  
                     adapter.log.debug('Remove ' + id + ': ' + id);
 
                     adapter.delObject(id, (res, err) => {
-                        if (res !== undefined && res !== 'Not exists') adapter.log.error('res from delObject: ' + res);
+                        if (res !== undefined && res !== null && res !== 'Not exists') adapter.log.error('res from delObject: ' + res);
                         if (err !== undefined) adapter.log.error('err from delObject: ' + err);
                     });
                     adapter.deleteState(id, (res, err) => {
-                        if (res !== undefined && res !== 'Not exists') adapter.log.error('res from deleteState: ' + res);
+                        if (res !== undefined && res !== null && res !== 'Not exists') adapter.log.error('res from deleteState: ' + res);
                         if (err !== undefined) adapter.log.error('err from deleteState: ' + err);
                     });
                 }
+                adapter.subscribeStates('*');
+                main();
             });
-        }
-        adapter.subscribeStates('*');
+        } else {
+             adapter.getAdapterObjects((res) => {
+                for (const id of Object.keys(res)) {
+                    objects[id] = true; //object already exists.
+                }
 
-        adapter.objects.getObjectList({include_docs: true}, (err, res) => {
-            res = res.rows;
-            objects = {};
-            for (let i = 0; i < res.length; i++) {
-                objects[res[i].doc._id] = res[i].doc;
-            }
-
-            adapter.log.debug('received all objects');
-            main();
-        });
+                adapter.log.debug('received all objects');
+                adapter.subscribeStates('*');
+                main();
+             });
+        }        
     },
     stateChange: function (id, state) {
         adapter.log.debug('stateChange for ' + id + ' found state = ' + JSON.stringify(state));
@@ -220,6 +223,7 @@ function parser() {
                 };
 
                 adapter.extendObject(c, stateObj);
+                objects[c] = true; //remember that we created the object.
             }
             const o = config[c];
             for (const i in o) {
@@ -268,6 +272,7 @@ function parser() {
                                 _id: objectName
                             };
                             adapter.extendObject(objectName, stateObj);
+                            objects[objectName] = true; //remember that we created the object.
                         }
                         adapter.setState(objectName, {
                             val: value,
@@ -312,6 +317,7 @@ function parser() {
                                 _id: objectName
                             };
                             adapter.extendObject(objectName, stateObj);
+                            objects[objectName] = true; //remember that we created the object.
                         }
                         adapter.setState(objectName, {
                             val: value,

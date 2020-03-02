@@ -123,18 +123,6 @@
                 "es": "revisión inicio de adaptador",
                 "pl": "naprawiono zasilacza",
                 "zh-cn": "修复启动的适配器"
-            },
-            "0.2.0": {
-                "en": "implement GPIOs control",
-                "de": "Implementiert die Steuerung von GPIOs",
-                "ru": "Добавлено управление GPIOs",
-                "pt": "implementar GPIOs de controle",
-                "nl": "implementeren GPIOs controle",
-                "fr": "mettre en œuvre des GPIOs de contrôle",
-                "it": "implementare GPIOs di controllo",
-                "es": "implementar GPIOs de control",
-                "pl": "realizacja kontroli GPIO ",
-                "zh-cn": "实现Gpio控制"
             }
         },
         "mode": "daemon",
@@ -156,6 +144,12 @@
         "authors": [
             "Christian Baumgartner",
             "husky-koglhof <husky.koglhof@icloud.com>"
+        ],
+        "osDependencies": {
+            "linux": ["build-essential", "python"]
+        },
+        "dependencies": [
+            {"js-controller":  ">=2.0.0"}
         ],
         "license": "MIT",
         "singletonHost": true,
