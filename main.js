@@ -441,10 +441,16 @@ function initPorts() {
     if (anyEnabled) {
         try {
             gpio = require('rpi-gpio');
+        } catch (e) {
+            gpio = null;
+            adapter.log.error('Cannot initialize GPIO: ' + e);
+            console.error('Cannot initialize GPIO: ' + e);
+        }
+        try {
             gpio.setMode(gpio.MODE_BCM);
         } catch (e) {
             gpio = null;
-            console.error('cannot use GPIO: ' + e);
+            adapter.log.error('cannot use GPIO: ' + e);
         }
     }
 
