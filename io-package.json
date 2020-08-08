@@ -180,7 +180,7 @@
         "cpu": {
             "clockArm": {
                 "command": "vcgencmd measure_clock arm",
-                "regexp": "frequency\(\d+\)=(\d+)",
+                "regexp": "frequency\\(\\d+\\)=(\\d+)",
                 "post": "$1/1000"
             },
             "load1,load5,load15": {
