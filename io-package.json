@@ -14,7 +14,7 @@
             "pl": "Monitor RPI",
             "zh-cn": "RPI-监视器"
         },
-        "version": "1.2.0",
+        "version": "1.2.1",
         "news": {
             "1.2.0": {
                 "en": "GPIO configuration as output with defined initial value",
