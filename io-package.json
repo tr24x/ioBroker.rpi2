@@ -183,46 +183,46 @@
                 "regexp": "frequency\\(\\d+\\)=(\\d+)",
                 "post": "$1/1000"
             },
-            "load1,load5,load15": {
-                "command": "cat /proc/loadavg",
-                "regexp": "^(\\S+)\\s(\\S+)\\s(\\S+)",
-                "post": ""
+            "clockCore": {
+                "command": "vcgencmd measure_clock core",
+                "regexp": "frequency\\(\\d+\\)=(\\d+)",
+                "post": "$1/1000"
             },
-            "scaling_governor": {
-                "command": "cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor",
-                "regexp": "(.*)",
-                "post": ""
-            }
-        },
-        "raspberry": {
-            "cpu_voltage": {
+            "voltageCore": {
                 "command": "vcgencmd measure_volts core",
                 "regexp": "(\\d+.\\d+)V",
                 "post": ""
             },
-            "mem_arm": {
+            "tempCore": {
+                "command": "vcgencmd measure_temp",
+                "regexp": "temp=(\\d+.\\d+)\\'C",
+                "post": ""
+            }
+        },
+        "raspberry": {
+            "memArm": {
                 "command": "vcgencmd get_mem arm",
                 "regexp": "(\\d+)",
                 "post": ""
             },
-            "mem_gpu": {
+            "memGpu": {
                 "command": "vcgencmd get_mem gpu",
                 "regexp": "(\\d+)",
                 "post": ""
             }
         },
         "memory": {
-            "memory_total": {
+            "total": {
                 "command": "cat /proc/meminfo",
                 "regexp": "MemTotal:\\s+(\\d+)",
                 "post": "$1/1024"
             },
-            "memory_free": {
+            "free": {
                 "command": "cat /proc/meminfo",
                 "regexp": "MemFree:\\s+(\\d+)",
                 "post": "$1/1024"
             },
-            "memory_available": {
+            "available": {
                 "command": "cat /proc/meminfo",
                 "regexp": "MemAvailable:\\s+(\\d+)",
                 "post": "$1/1024",
@@ -230,37 +230,37 @@
             }
         },
         "network": {
-            "net_received": {
+            "bytesReceived": {
                 "command": "cat /sys/class/net/eth0/statistics/rx_bytes",
                 "regexp": "(.*)",
                 "post": "$1*-1"
             },
-            "net_send": {
+            "bytesSent": {
                 "command": "cat /sys/class/net/eth0/statistics/tx_bytes",
                 "regexp": "(.*)",
                 "post": ""
             }
         },
         "sdcard": {
-            "sdcard_root_total": {
+            "rootTotal": {
                 "command": "df /",
                 "regexp": "\\S+\\s+(\\d+).*\\/$",
                 "post": "$1/1024",
                 "multiline": true
             },
-            "sdcard_boot_total": {
+            "bootTotal": {
                 "command": "df /boot",
                 "regexp": "\\S+\\s+(\\d+).*\\/boot$",
                 "post": "$1/1024",
                 "multiline": true
             },
-            "sdcard_root_used": {
+            "rootUsed": {
                 "command": "df /",
                 "regexp": "\\S+\\s+\\d+\\s+(\\d+).*\\/$",
                 "post": "$1/1024",
                 "multiline": true
             },
-            "sdcard_boot_used": {
+            "bootUsed": {
                 "command": "df /boot",
                 "regexp": "\\S+\\s+\\d+\\s+(\\d+).*\\/boot$",
                 "post": "$1/1024",
@@ -268,13 +268,13 @@
             }
         },
         "swap": {
-            "swap_total": {
+            "swapTotal": {
                 "command": "cat /proc/meminfo",
                 "regexp": "SwapTotal:\\s+(\\d+)",
                 "post": "$1/1024",
                 "multiline": true
             },
-            "swap_used": {
+            "swapUsed": {
                 "command": "cat /proc/meminfo",
                 "regexp": "SwapFree:\\s+(\\d+)",
                 "post": "(rpi.swap_total - $1)/1024",
@@ -282,7 +282,7 @@
             }
         },
         "temperature": {
-            "soc_temp": {
+            "soc": {
                 "command": "cat /sys/devices/virtual/thermal/thermal_zone0/temp",
                 "regexp": "(.*)",
                 "post": "$1/1000"
@@ -296,12 +296,12 @@
             }
         },
         "wlan": {
-            "wifi_received": {
+            "bytesReceived": {
                 "command": "cat /sys/class/net/wlan0/statistics/rx_bytes",
                 "regexp": "(.*)",
                 "post": "$1*-1"
             },
-            "wifi_send": {
+            "bytesSent": {
                 "command": "cat /sys/class/net/wlan0/statistics/tx_bytes",
                 "regexp": "(.*)",
                 "post": ""
