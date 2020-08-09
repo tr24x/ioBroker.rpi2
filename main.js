@@ -281,6 +281,7 @@ function parser() {
                     }
                 } else {
                     value = rpi[i];
+
                     if (value !== undefined && value !== '' && value !== null) {
                         if (post.indexOf('$1') !== -1) {
                             adapter.log.debug('VALUE: ' + value + ' POST: ' + post);
@@ -323,13 +324,6 @@ function parser() {
                             val: value,
                             ack: true
                         });
-                    } else {
-                        if (i === 'wifi_send' || i === 'wifi_received') {
-                            adapter.log.debug('No Value found for ' + i);
-                        } else if (! errorsLogged[i]) {
-                            adapter.log.error('No Value found for ' + i);
-                            errorsLogged[i] = true;
-                        }
                     }
                 }
             }

@@ -14,7 +14,7 @@
             "pl": "Monitor RPI",
             "zh-cn": "RPI-监视器"
         },
-        "version": "1.2.1",
+        "version": "1.2.2",
         "news": {
             "1.2.0": {
                 "en": "GPIO configuration as output with defined initial value",
@@ -170,12 +170,13 @@
         "c_cpu": true,
         "c_raspberry": false,
         "c_memory": true,
-        "c_network": true,
+        "c_eth0": true,
         "c_sdcard": true,
+        "c_usb_storage" : true,
         "c_swap": true,
         "c_temperature": true,
-        "c_uptime": true,
-        "c_wlan": true,
+        "c_system": true,
+        "c_wlan0": true,
         "interval": 60000,
         "cpu": {
             "clockArm": {
@@ -229,7 +230,7 @@
                 "multiline": true
             }
         },
-        "network": {
+        "eth0": {
             "bytesReceived": {
                 "command": "cat /sys/class/net/eth0/statistics/rx_bytes",
                 "regexp": "(.*)",
@@ -267,6 +268,20 @@
                 "multiline": true
             }
         },
+        "usb_storage": {
+            "usb1Total": {
+                "command": "df /media/usb1",
+                "regexp": "\\S+\\s+(\\d+).*\\/$",
+                "post": "$1/1024",
+                "multiline": true
+            },
+            "usb1Used": {
+                "command": "df /media/usb1",
+                "regexp": "\\S+\\s+\\d+\\s+(\\d+).*\\/$",
+                "post": "$1/1024",
+                "multiline": true
+            }
+        },
         "swap": {
             "swapTotal": {
                 "command": "cat /proc/meminfo",
@@ -288,14 +303,14 @@
                 "post": "$1/1000"
             }
         },
-        "uptime": {
+        "system": {
             "uptime": {
                 "command": "cat /proc/uptime",
                 "regexp": "(^\\S+)",
                 "post": ""
             }
         },
-        "wlan": {
+        "wlan0": {
             "bytesReceived": {
                 "command": "cat /sys/class/net/wlan0/statistics/rx_bytes",
                 "regexp": "(.*)",
