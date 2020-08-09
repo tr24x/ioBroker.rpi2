@@ -168,7 +168,7 @@
     },
     "native": {
         "c_cpu": true,
-        "c_raspberry": false,
+        "c_soc": false,
         "c_memory": true,
         "c_eth0": true,
         "c_sdcard": true,
@@ -200,7 +200,7 @@
                 "post": ""
             }
         },
-        "raspberry": {
+        "soc": {
             "memArm": {
                 "command": "vcgencmd get_mem arm",
                 "regexp": "(\\d+)",
