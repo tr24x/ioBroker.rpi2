@@ -167,18 +167,16 @@
         "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.rpi2/master/admin/rpi.png"
     },
     "native": {
-        "c_cpu": true,
-        "c_soc": false,
+        "c_soc": true,
         "c_memory": true,
         "c_eth0": true,
+        "c_wlan0": true,
         "c_sdcard": true,
         "c_usb_storage" : true,
-        "c_swap": true,
         "c_temperature": true,
         "c_system": true,
-        "c_wlan0": true,
         "interval": 60000,
-        "cpu": {
+        "soc": {
             "clockArm": {
                 "command": "vcgencmd measure_clock arm",
                 "regexp": "frequency\\(\\d+\\)=(\\d+)",
@@ -198,9 +196,7 @@
                 "command": "vcgencmd measure_temp",
                 "regexp": "temp=(\\d+.\\d+)\\'C",
                 "post": ""
-            }
-        },
-        "soc": {
+            },
             "memArm": {
                 "command": "vcgencmd get_mem arm",
                 "regexp": "(\\d+)",
@@ -213,20 +209,32 @@
             }
         },
         "memory": {
-            "total": {
+            "memTotal": {
                 "command": "cat /proc/meminfo",
                 "regexp": "MemTotal:\\s+(\\d+)",
                 "post": "$1/1024"
             },
-            "free": {
+            "memFree": {
                 "command": "cat /proc/meminfo",
                 "regexp": "MemFree:\\s+(\\d+)",
                 "post": "$1/1024"
             },
-            "available": {
+            "memAvailable": {
                 "command": "cat /proc/meminfo",
                 "regexp": "MemAvailable:\\s+(\\d+)",
                 "post": "$1/1024",
+                "multiline": true
+            },
+            "swapTotal": {
+                "command": "cat /proc/meminfo",
+                "regexp": "SwapTotal:\\s+(\\d+)",
+                "post": "$1/1024",
+                "multiline": true
+            },
+            "swapUsed": {
+                "command": "cat /proc/meminfo",
+                "regexp": "SwapFree:\\s+(\\d+)",
+                "post": "(rpi.swap_total - $1)/1024",
                 "multiline": true
             }
         },
@@ -238,6 +246,18 @@
             },
             "bytesSent": {
                 "command": "cat /sys/class/net/eth0/statistics/tx_bytes",
+                "regexp": "(.*)",
+                "post": ""
+            }
+        },
+        "wlan0": {
+            "bytesReceived": {
+                "command": "cat /sys/class/net/wlan0/statistics/rx_bytes",
+                "regexp": "(.*)",
+                "post": "$1*-1"
+            },
+            "bytesSent": {
+                "command": "cat /sys/class/net/wlan0/statistics/tx_bytes",
                 "regexp": "(.*)",
                 "post": ""
             }
@@ -282,20 +302,6 @@
                 "multiline": true
             }
         },
-        "swap": {
-            "swapTotal": {
-                "command": "cat /proc/meminfo",
-                "regexp": "SwapTotal:\\s+(\\d+)",
-                "post": "$1/1024",
-                "multiline": true
-            },
-            "swapUsed": {
-                "command": "cat /proc/meminfo",
-                "regexp": "SwapFree:\\s+(\\d+)",
-                "post": "(rpi.swap_total - $1)/1024",
-                "multiline": true
-            }
-        },
         "temperature": {
             "soc": {
                 "command": "cat /sys/devices/virtual/thermal/thermal_zone0/temp",
@@ -307,18 +313,6 @@
             "uptime": {
                 "command": "cat /proc/uptime",
                 "regexp": "(^\\S+)",
-                "post": ""
-            }
-        },
-        "wlan0": {
-            "bytesReceived": {
-                "command": "cat /sys/class/net/wlan0/statistics/rx_bytes",
-                "regexp": "(.*)",
-                "post": "$1*-1"
-            },
-            "bytesSent": {
-                "command": "cat /sys/class/net/wlan0/statistics/tx_bytes",
-                "regexp": "(.*)",
                 "post": ""
             }
         },
