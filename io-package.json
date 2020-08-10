@@ -288,13 +288,13 @@
         "storage": {
             "usb1Total": {
                 "command": "df /media/usb1",
-                "regexp": "\\S+\\s+(\\d+).*\\/$",
+                "regexp": "\\S+\\s+(\\d+).*\\/media/usb1$",
                 "post": "$1/1024",
                 "multiline": true
             },
             "usb1Used": {
                 "command": "df /media/usb1",
-                "regexp": "\\S+\\s+\\d+\\s+(\\d+).*\\/$",
+                "regexp": "\\S+\\s+\\d+\\s+(\\d+).*\\/media/usb1$",
                 "post": "$1/1024",
                 "multiline": true
             }
