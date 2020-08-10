@@ -171,7 +171,7 @@
         "c_memory": true,
         "c_network": true,
         "c_sdcard": true,
-        "c_usb_storage" : true,
+        "c_storage" : true,
         "c_temperature": true,
         "c_system": true,
         "interval": 60000,
@@ -285,7 +285,7 @@
                 "multiline": true
             }
         },
-        "usb_storage": {
+        "storage": {
             "usb1Total": {
                 "command": "df /media/usb1",
                 "regexp": "\\S+\\s+(\\d+).*\\/$",
