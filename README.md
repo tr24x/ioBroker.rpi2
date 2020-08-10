@@ -66,7 +66,7 @@ Following Objects are available after selection:
 #### **Temperature**
 - soc_temp
 
-#### **Uptime**
+#### **System**
 - uptime
 
 #### **WLAN**
@@ -83,7 +83,7 @@ On configuration page you can select following modules:
 - SDCard
 - Swap
 - Temperature
-- Uptime
+- System
 - WLAN
 
 ## Logfiles / Configuration Settings

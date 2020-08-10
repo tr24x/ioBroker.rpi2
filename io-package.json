@@ -167,16 +167,15 @@
         "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.rpi2/master/admin/rpi.png"
     },
     "native": {
-        "c_soc": true,
+        "c_cpu": true,
         "c_memory": true,
-        "c_eth0": true,
-        "c_wlan0": true,
+        "c_network": true,
         "c_sdcard": true,
         "c_usb_storage" : true,
         "c_temperature": true,
         "c_system": true,
         "interval": 60000,
-        "soc": {
+        "cpu": {
             "clockArm": {
                 "command": "vcgencmd measure_clock arm",
                 "regexp": "frequency\\(\\d+\\)=(\\d+)",
@@ -238,7 +237,7 @@
                 "multiline": true
             }
         },
-        "eth0": {
+        "network": {
             "bytesReceived": {
                 "command": "cat /sys/class/net/eth0/statistics/rx_bytes",
                 "regexp": "(.*)",
@@ -248,9 +247,7 @@
                 "command": "cat /sys/class/net/eth0/statistics/tx_bytes",
                 "regexp": "(.*)",
                 "post": ""
-            }
-        },
-        "wlan0": {
+            },
             "bytesReceived": {
                 "command": "cat /sys/class/net/wlan0/statistics/rx_bytes",
                 "regexp": "(.*)",
