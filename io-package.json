@@ -350,8 +350,8 @@
             },
             "sysLoadUser": {
                 "command": "mpstat | tail -1",
-                "regexp": "\\S+\\s+\\S+\\s+(\\d+.\\d+)\\.*$",
-                "post": ""
+                "regexp": "^\\S+\\s+\\S+\\s+(\\d+.\\d+)\\.*",
+                "post": "$1"
             }
         },
         "gpios": []
