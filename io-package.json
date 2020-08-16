@@ -309,7 +309,7 @@
             },
             "idle": {
                 "command": "mpstat 1 2 | tail -1",
-                "regexp": ".*\\s+(\\d+.\\d+)$",
+                "regexp": "(\\d+\\.\\d+)$",
                 "post": "$1",
                 "multiline": true
             }
