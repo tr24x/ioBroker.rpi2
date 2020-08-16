@@ -357,6 +357,11 @@
                 "command": "mpstat 1 2 | tail -1",
                 "regexp": "^\\S+\\s+\\S+\\s+\\S+\\s+\\S+\\s+(\\d+.\\d+)\\.*",
                 "post": "$1"
+            },
+            "idle": {
+                "command": "mpstat 1 2 | tail -1",
+                "regexp": ".*(\\d+.\\d+)$",
+                "post": "$1"
             }
         },
         "gpios": []
