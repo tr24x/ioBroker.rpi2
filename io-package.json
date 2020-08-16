@@ -170,7 +170,6 @@
         "c_cpu": true,
         "c_memory": true,
         "c_network": true,
-        "c_sdcard": true,
         "c_storage" : true,
         "c_temperature": true,
         "c_system": true,
@@ -259,7 +258,7 @@
                 "post": ""
             }
         },
-        "sdcard": {
+        "storage": {
             "rootTotal": {
                 "command": "df /",
                 "regexp": "\\S+\\s+(\\d+).*\\/$",
@@ -281,56 +280,6 @@
             "bootUsed": {
                 "command": "df /boot",
                 "regexp": "\\S+\\s+\\d+\\s+(\\d+).*\\/boot$",
-                "post": "$1/1024",
-                "multiline": true
-            }
-        },
-        "storage": {
-            "usb1Total": {
-                "command": "df /media/usb1",
-                "regexp": "\\S+\\s+(\\d+).*\\/media/usb1$",
-                "post": "$1/1024",
-                "multiline": true
-            },
-            "usb1Used": {
-                "command": "df /media/usb1",
-                "regexp": "\\S+\\s+\\d+\\s+(\\d+).*\\/media/usb1$",
-                "post": "$1/1024",
-                "multiline": true
-            },
-            "usb2Total": {
-                "command": "df /media/usb2",
-                "regexp": "\\S+\\s+(\\d+).*\\/media/usb2$",
-                "post": "$1/1024",
-                "multiline": true
-            },
-            "usb2Used": {
-                "command": "df /media/usb2",
-                "regexp": "\\S+\\s+\\d+\\s+(\\d+).*\\/media/usb2$",
-                "post": "$1/1024",
-                "multiline": true
-            },
-            "usb3Total": {
-                "command": "df /media/usb3",
-                "regexp": "\\S+\\s+(\\d+).*\\/media/usb3$",
-                "post": "$1/1024",
-                "multiline": true
-            },
-            "usb3Used": {
-                "command": "df /media/usb3",
-                "regexp": "\\S+\\s+\\d+\\s+(\\d+).*\\/media/usb3$",
-                "post": "$1/1024",
-                "multiline": true
-            },
-            "usb4Total": {
-                "command": "df /media/usb4",
-                "regexp": "\\S+\\s+(\\d+).*\\/media/usb4$",
-                "post": "$1/1024",
-                "multiline": true
-            },
-            "usb4Used": {
-                "command": "df /media/usb4",
-                "regexp": "\\S+\\s+\\d+\\s+(\\d+).*\\/media/usb4$",
                 "post": "$1/1024",
                 "multiline": true
             }
