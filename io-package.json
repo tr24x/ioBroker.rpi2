@@ -343,10 +343,15 @@
             }
         },
         "system": {
-            "uptime": {
+            "sysUptime": {
                 "command": "cat /proc/uptime",
                 "regexp": "(^\\S+)",
                 "post": "$1/3600"
+            },
+            "sysLoadUser": {
+                "command": "mpstat | tail -1",
+                "regexp": "\\S+\\s+\\S+\\s+(\\d+.\\d+)\\.*$",
+                "post": ""
             }
         },
         "gpios": []
