@@ -343,14 +343,19 @@
             }
         },
         "system": {
-            "sysUptime": {
+            "uptime": {
                 "command": "cat /proc/uptime",
                 "regexp": "(^\\S+)",
                 "post": "$1/3600"
             },
-            "sysLoadUser": {
-                "command": "mpstat | tail -1",
+            "loadUser": {
+                "command": "mpstat 1 2 | tail -1",
                 "regexp": "^\\S+\\s+\\S+\\s+(\\d+.\\d+)\\.*",
+                "post": "$1"
+            },
+            "loadSys": {
+                "command": "mpstat 1 2 | tail -1",
+                "regexp": "^\\S+\\s+\\S+\\s+\\S+\\s+\\S+\\s+(\\d+.\\d+)\\.*",
                 "post": "$1"
             }
         },
